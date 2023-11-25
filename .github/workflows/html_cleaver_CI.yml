@@ -1,0 +1,40 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+
+env:
+  POETRY_VERSION: "1.6.1"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
+    name: Python ${{ matrix.python-version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }} + Poetry ${{ env.POETRY_VERSION }}
+        uses: snok/install-poetry@v1.3.4
+        with:
+          python-version: ${{ matrix.python-version }}
+          poetry-version: ${{ env.POETRY_VERSION }}
+          cache-key: core
+
+      - name: Install dependencies
+        shell: bash
+        run: poetry install
+
+      - name: Run tests
+        shell: bash
+        run: python -m unittest discover -s test
+
+
