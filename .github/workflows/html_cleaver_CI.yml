@@ -28,13 +28,18 @@ jobs:
           python-version: ${{ matrix.python-version }}
           poetry-version: ${{ env.POETRY_VERSION }}
           cache-key: core
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
       - name: Install dependencies
         shell: bash
         run: poetry install
 
+
       - name: Run tests
         shell: bash
-        run: python -m unittest discover -s test
-
-
+        run: |
+          source .venv/bin/activate
+          pip install selenium
+          pip install pytest
+          poetry run pytest

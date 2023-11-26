@@ -205,7 +205,6 @@ if __name__ == "__main__":
 
     main_verbose = False
 
-    
     # main_parse_render: Literal["xml", "lxml", "selenium"] = "xml"
     main_parse_render: Literal["xml", "lxml", "selenium"] = "lxml"
     # main_parse_render: Literal["xml", "lxml", "selenium"] = "selenium"

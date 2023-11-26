@@ -14,19 +14,20 @@ The logical algorithm and data-structures are in `src/html_cleaver/handler`.
 This is a "tree-capitator" if you will,  
 cleaving text apart and cleaving headers together.
 
+## Quickstart
 ### Installation:
 `pip install html-cleaver`
 
-Optionally, if you're working with HTML which requires javascript rendering:  
+Optionally, if you're working with HTML that requires javascript rendering:  
 `pip install selenium`
 
 ### Testing:
-`python -m unittest discover -s src`
+`python -m unittest discover -s src`  
 The tests require Selenium.
 
 ### Example usage:
-```python
 
+```python
 from html_cleaver.cleaver import get_cleaver
 
 # default parser is "lxml" for loose html
@@ -58,8 +59,13 @@ with get_cleaver("lxml", ["h4", "h5"]) as cleaver:
     cleaver.parse_events(
         ["https://www.gutenberg.org/cache/epub/56852/pg56852-images.html"],
         print)
+```
+### Example usage with Selenium:
+Using selenium on a page that requires javascript to load contents
 
-# example of using selenium on a page which requires javascript to load contents
+```python
+from html_cleaver.cleaver import get_cleaver
+
 print("using default lxml produces very few chunks:")
 with get_cleaver() as cleaver:
     cleaver.parse_events(
