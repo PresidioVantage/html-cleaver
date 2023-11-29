@@ -209,8 +209,6 @@ if __name__ == "__main__":
     main_parse_render: Literal["xml", "lxml", "selenium"] = "lxml"
     # main_parse_render: Literal["xml", "lxml", "selenium"] = "selenium"
     
-    default_dir = os.path.join(os.path.dirname(__file__), "../test")
-    
     # strictly xml compliant
     default_file = "test1basic.html"
     # requires lxml

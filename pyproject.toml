@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "html-cleaver"
-version = "0.3.0"
+version = "1.0.0"
 description = "cleave html headers and text"
 license = "MIT"
 authors = [

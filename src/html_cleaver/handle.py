@@ -378,8 +378,6 @@ if __name__ == "__main__":
     
     main_verbose = False
     
-    default_dir = os.path.join(os.path.dirname(__file__), "../test")
-    
     if main_verbose:
         logging.basicConfig(level=logging.DEBUG)
         main_callback = LOG.info
