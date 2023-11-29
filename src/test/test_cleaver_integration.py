@@ -29,37 +29,37 @@ class TestHtmlCleaverIntegration(unittest.TestCase):
     def test_1basic(self):
         url = f"{URL_BASE}test1basic.html"
         
-        chunk_list = get_cleaver("xml").parse_queue(url)
+        chunk_list = get_cleaver("xml").parse_chunk_sequence([url])
         self.assertEqualData(EXPECT_CHUNKS, chunk_list, True)
         
-        chunk_list = get_cleaver("lxml").parse_queue(url)
+        chunk_list = get_cleaver("lxml").parse_chunk_sequence([url])
         self.assertEqualData(EXPECT_CHUNKS, chunk_list, True)
 
         with get_cleaver("selenium") as cleaver:
-            chunk_list = cleaver.parse_queue(url)
-        self.assertEqualData(EXPECT_CHUNKS, chunk_list, True)
+            chunk_list = cleaver.parse_chunk_sequence([url])
+            self.assertEqualData(EXPECT_CHUNKS, chunk_list, True)
 
     def test_6illformed(self):
         url = f"{URL_BASE}test6illformed.html"
-        chunk_list = get_cleaver("lxml").parse_queue(url)
+        chunk_list = get_cleaver("lxml").parse_chunk_sequence([url])
         self.assertEqualData(EXPECT_CHUNKS, chunk_list, False)
 
     def test_7javascript(self):
         url = f"{URL_BASE}test7javascript.html"
         with get_cleaver("selenium") as cleaver:
-            chunk_list = cleaver.parse_queue(url)
-        self.assertEqualData(EXPECT_CHUNKS, chunk_list, False)
+            chunk_list = cleaver.parse_chunk_sequence([url])
+            self.assertEqualData(EXPECT_CHUNKS, chunk_list, False)
 
     def test_HttpIO(self):
         url = f"{URL_BASE}test1basic.html"
 
         with urllib.request.urlopen(url) as c:
-            chunk_list = get_cleaver("xml").parse_queue(c)
-        self.assertEqualData(EXPECT_CHUNKS, chunk_list, True)
+            chunk_list = get_cleaver("xml").parse_chunk_sequence([c])
+            self.assertEqualData(EXPECT_CHUNKS, chunk_list, True)
 
         with urllib.request.urlopen(url) as c:
-            chunk_list = get_cleaver("lxml").parse_queue(c)
-        self.assertEqualData(EXPECT_CHUNKS, chunk_list, True)
+            chunk_list = get_cleaver("lxml").parse_chunk_sequence([c])
+            self.assertEqualData(EXPECT_CHUNKS, chunk_list, True)
 
         # N.B. selenium api requires string input!
 

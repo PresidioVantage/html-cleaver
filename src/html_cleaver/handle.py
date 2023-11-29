@@ -373,9 +373,12 @@ class ChunkPos:
 
 
 if __name__ == "__main__":
+    import os
     from html_cleaver.util import parse_html
     
     main_verbose = False
+    
+    default_dir = os.path.join(os.path.dirname(__file__), "../test")
     
     if main_verbose:
         logging.basicConfig(level=logging.DEBUG)
@@ -384,6 +387,7 @@ if __name__ == "__main__":
         main_callback = print
     handler = CleaverHandle(main_callback)
     
-    parse_html.xml_get_sax("../test/test1basic.html", handler)
-    parse_html.lxml_get_sax("../test/test6illformed.html", handler)
-    parse_html.selenium_get_sax("../test/test7javascript.html", handler)
+    uri_base = "https://presidiovantage.com/html-cleaver/"
+    parse_html.xml_get_sax(uri_base + "test1basic.html", handler)
+    parse_html.lxml_get_sax(uri_base + "test6illformed.html", handler)
+    parse_html.selenium_get_sax(uri_base + "test7javascript.html", handler)

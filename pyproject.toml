@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "html-cleaver"
-version = "0.2.0"
-description = "cleave html text with relevant headers"
+version = "0.3.0"
+description = "cleave html headers and text"
 license = "MIT"
 authors = [
 	"Presidio Vantage <presidiovantage@github.com>",
@@ -12,6 +12,7 @@ repository = "https://github.com/PresidioVantage/html-cleaver"
 keywords = ["xml", "html"]
 packages = [
 	{include = "html_cleaver", from = "src"},
+	{include = "test", from = "src", format = "sdist"},
 ]
 
 [tool.poetry.dependencies]
@@ -19,6 +20,9 @@ python = "^3.8"
 lxml = "^4.9.3"
 selenium = {version="^4.15.2", optional=true}
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^6.0.0"
+selenium = "^4.15.2"
 
 [build-system]
 requires = ["poetry-core"]

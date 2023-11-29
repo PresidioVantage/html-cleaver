@@ -12,20 +12,19 @@ The API entry-point is in `src/html_cleaver/cleaver`.
 The logical algorithm and data-structures are in `src/html_cleaver/handler`.
 
 This is a "tree-capitator" if you will,  
-cleaving text apart and cleaving headers together.
+cleaving headers together while cleaving text apart.
 
-## Quickstart
-### Installation:
+## Quickstart:
 `pip install html-cleaver`
 
 Optionally, if you're working with HTML that requires javascript rendering:  
 `pip install selenium`
 
-### Testing:
-`python -m unittest discover -s src`  
-The tests require Selenium.
+Testing an example on the command-line:
+`python -m html_cleaver.cleaver https://plato.stanford.edu/entries/goedel/`
 
 ### Example usage:
+Cleaving pages of varying difficulties:
 
 ```python
 from html_cleaver.cleaver import get_cleaver
@@ -33,21 +32,20 @@ from html_cleaver.cleaver import get_cleaver
 # default parser is "lxml" for loose html
 with get_cleaver() as cleaver:
     
-    # example of favorable structure yielding high-quality chunks
-    # (prints chunk-events directly)
+    # handle chunk-events directly
+    # (example of favorable structure yielding high-quality chunks)
     cleaver.parse_events(
         ["https://plato.stanford.edu/entries/goedel/"],
         print)
     
-    # example of moderate structure yielding medium-quality chunks
-    # (gets collection of chunks and loops through them)
-    q = cleaver.parse_queue(
-        ["https://en.wikipedia.org/wiki/Kurt_G%C3%B6del"])
-    while q:
-        print(q.popleft())
+    # get collection of chunks
+    # (example of moderate structure yielding medium-quality chunks)
+    for c in cleaver.parse_chunk_sequence(
+            ["https://en.wikipedia.org/wiki/Kurt_G%C3%B6del"]):
+        print(c)
     
-    # examples of challenging structure yielding poor-quality chunks
-    # (loops through sequence of chunks from sequence of pages)
+    # sequence of chunks from sequence of pages
+    # (examples of challenging structure yielding poor-quality chunks)
     l = [
         "https://www.gutenberg.org/cache/epub/56852/pg56852-images.html",
         "https://www.cnn.com/2023/09/25/opinions/opinion-vincent-doumeizel-seaweed-scn-climate-c2e-spc-intl"]
@@ -60,8 +58,9 @@ with get_cleaver("lxml", ["h4", "h5"]) as cleaver:
         ["https://www.gutenberg.org/cache/epub/56852/pg56852-images.html"],
         print)
 ```
+
 ### Example usage with Selenium:
-Using selenium on a page that requires javascript to load contents
+Using selenium on a page that requires javascript to load contents:
 
 ```python
 from html_cleaver.cleaver import get_cleaver
@@ -71,9 +70,34 @@ with get_cleaver() as cleaver:
     cleaver.parse_events(
         ["https://www.youtube.com/watch?v=rfscVS0vtbw"],
         print)
+
 print("using selenium produces many more chunks:")
 with get_cleaver("selenium") as cleaver:
     cleaver.parse_events(
         ["https://www.youtube.com/watch?v=rfscVS0vtbw"],
         print)
 ```
+
+
+## Development:
+### Testing:
+Testing without Poetry:  
+`pip install lxml`  
+`pip install selenium`  
+`python -m unittest discover -s src`
+
+Testing with Poetry:  
+`poetry install`  
+`poetry run pytest`
+
+### Build:
+Building from source:  
+`rm dist/*`  
+`python -m build`
+
+Installing from the build:  
+`pip install dist/*.whl`
+
+Publishing from the build:  
+`python -m twine upload --skip-existing -u __token__ -p $TESTPYPI_TOKEN --repository testpypi dist/*`  
+`python -m twine upload --skip-existing -u __token__ -p $PYPI_TOKEN dist/*`

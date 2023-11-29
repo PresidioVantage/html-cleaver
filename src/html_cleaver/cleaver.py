@@ -110,9 +110,9 @@ class HTMLCleaver:
     ) -> Generator[deque[dict[str, any]], None, None]:
         _check_iterable_not_string(sources)
         for source in sources:
-            yield self.parse_queue(source)
+            yield self._parse_queue(source)
 
-    def parse_queue(
+    def _parse_queue(
             self,
             source: any,
     ) -> deque[dict[str, any], None, None]:
@@ -201,23 +201,26 @@ class SeleniumCleaver(HTMLCleaver):
 
 
 if __name__ == "__main__":
-    import sys
+    import sys, os
 
     main_verbose = False
 
     # main_parse_render: Literal["xml", "lxml", "selenium"] = "xml"
     main_parse_render: Literal["xml", "lxml", "selenium"] = "lxml"
     # main_parse_render: Literal["xml", "lxml", "selenium"] = "selenium"
-
+    
+    default_dir = os.path.join(os.path.dirname(__file__), "../test")
+    
     # strictly xml compliant
-    default_file = "../test/test1basic.html"
+    default_file = "test1basic.html"
     # requires lxml
-    # default_file = "../test/test6illformed.html"
+    # default_file = "test6illformed.html"
     # requires selenium
-    # default_file = "../test/test7javascript.html"
-
+    # default_file = "test7javascript.html"
+    
     # if no sources are specified by command-line args, use default(s)
-    main_sources = sys.argv[1:] if 1 < len(sys.argv) else [default_file]
+    default_url = "https://presidiovantage.com/html-cleaver/" + default_file
+    main_sources = sys.argv[1:] if 1 < len(sys.argv) else [default_url]
 
     if main_verbose:
         logging.basicConfig(level=logging.DEBUG)
