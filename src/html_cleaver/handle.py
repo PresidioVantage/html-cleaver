@@ -10,6 +10,9 @@ Each class represents a tree structure, and stores only a (singly-linked list) p
 ElemPos models a tree of Element(position)s consistent with the DOM itself.
 Header permits parent("prior") references to prior-siblings *in-addition-to* ancestors.
 ChunkPos models a tree similar to Header, but also containing non-header "chunking" elements in the hierarchy.
+
+XXX TODO 2023-11-28 ignore any text in a <script> tag!
+https://www.space.com/november-full-moon-tonight-2023
 """
 
 from typing import (
