@@ -90,7 +90,8 @@ class HTMLCleaver:
         self._parse_sax: Callable[[any, ContentHandler], None] = \
             parse_html.xml_get_sax if self.strict else parse_html.lxml_get_sax
 
-    # trivial implementation of context-manager, for consistency with Selenium version below
+    # trivial implementation of context-manager,
+    # for consistency with Selenium version below
     def __enter__(self) -> "HTMLCleaver":
         return self
 

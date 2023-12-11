@@ -11,8 +11,7 @@ ElemPos models a tree of Element(position)s consistent with the DOM itself.
 Header permits parent("prior") references to prior-siblings *in-addition-to* ancestors.
 ChunkPos models a tree similar to Header, but also containing non-header "chunking" elements in the hierarchy.
 
-XXX TODO 2023-11-28 ignore any text in a <script> tag!
-https://www.space.com/november-full-moon-tonight-2023
+TODO consider capturing 'title' tag as one additional field (aggregate text)
 """
 
 from typing import (
@@ -30,18 +29,19 @@ from xml.sax.handler import ContentHandler
 
 
 LOG = logging.getLogger(__name__)
-
-# CONSTANTS
 ALL_HEADER_TAGS = [
     "h1", "h2", "h3", "h4", "h5", "h6"]
+
 
 # CONFIGS
 TUPLES_NOT_DICT = False
 FLATTEN_TAGS = [
     "header", "hgroup"]
-DEFAULT_HEADER_TAGS = ALL_HEADER_TAGS
+SUPPRESS_TAGS = [
+    "head", "script", "style"]  # TODO consider adding meta/link to this list?
 
-# to capture all text, recommended: ["html"]+DEFAULT_CHUNK_TAGS
+DEFAULT_HEADER_TAGS = ALL_HEADER_TAGS
+# to capture all text content, recommended: ["body"]+DEFAULT_CHUNK_TAGS
 DEFAULT_CHUNK_TAGS = [
     "div", "p", "blockquote", "ol", "ul"]  # TODO consider adding "article" to this list?
 
@@ -81,6 +81,7 @@ class CleaverHandle(ContentHandler):
         self.chunk: Optional[ChunkPos] = None
         self.text: Optional[str] = None
         self.building_header: Optional[Header] = None
+        self.suppress: Optional[ElemPos] = None
 
     # ignore namespace information
     def startElementNS(self, nsname: tuple[str, str], qname, attrs):
@@ -112,6 +113,16 @@ class CleaverHandle(ContentHandler):
 
         self.current = ElemPos(self.current, name.lower(), self.prior_headers)
         LOG.debug(f"<{self.current}")
+
+        # already suppressing:
+        if self.suppress:
+            LOG.debug(f"<X '{name}'")
+            return;
+        # start suppressing:
+        if name.lower() in SUPPRESS_TAGS:
+            LOG.debug(f"<SUPPRESS '{name}'")
+            self.suppress = self.current
+            return
 
         # if already actively building a header, no other logic (except one validation)
         if self.building_header:
@@ -160,7 +171,12 @@ class CleaverHandle(ContentHandler):
             raise Exception(f"end <{name}> in <{self.current.tag}>")
         LOG.debug(f"/{self.current}")
 
-        if self.building_header:
+        if self.suppress:
+            if self.suppress == self.current:
+                LOG.debug(f"/SUPPRESS '{name}'")
+                self.suppress = None;
+
+        elif self.building_header:
             # building_header mode does nothing, except flag when it is over
             if self.current == self.building_header.pos:
                 self.building_header.text = self.building_header.text.strip()
@@ -196,7 +212,11 @@ class CleaverHandle(ContentHandler):
         if self.current is None:
             raise Exception(f"characters in None: {content}")
 
-        LOG.debug("T" + self.current.get_indent(1) + content.strip())
+        if self.suppress:
+            LOG.debug("XT" + self.current.get_indent(1) + content.strip())
+            return
+        else:
+            LOG.debug("T" + self.current.get_indent(1) + content.strip())
 
         if self.building_header:
             self.building_header.text += content

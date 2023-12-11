@@ -1,16 +1,6 @@
 <html>
 	<head>
 		<title>Test Article</title>
-		
-		<!--
-		this script restores the correct h1.
-		-->
-		<script>
-			function onContentLoaded() {
-				document.getElementById("the_title").innerHTML = "The Universe"
-			}
-			window.addEventListener('DOMContentLoaded', onContentLoaded);
-		</script>
 	</head>
 	<body>
 		
@@ -20,11 +10,7 @@
 		</span>
 		
 		<div>
-			<!--
-			this header's value is incorrect,
-			corrected on-load by JavaScript
-			-->
-			<h1 id="the_title">The Multiverse</h1>
+			<h1>The Universe</h1>
 			<div>
 				<p>The universe is a large place.</p>
 				<p>It contains lots of stuff.</p>
@@ -45,6 +31,23 @@
 						<p>The nearest star is Proxima Centauri.</p>
 						<p>It is a relatively-small star.</p>
 					</div>
+					
+					<!-- ignored: invalid but oft-tolerated location -->
+					<style>
+						h2 {
+							color: red;
+						}
+					</style>
+					
+					<!-- ignored: script contents -->
+					<script type="text/html">
+						<h2>suppressed script header</h2>
+						<p>suppressed script content</p>
+					</script>
+					<script>
+						// javascript doing nothing
+						console.log("doing nothing");
+					</script>
 					
 					<h3>The Sun</h3>
 					<div>

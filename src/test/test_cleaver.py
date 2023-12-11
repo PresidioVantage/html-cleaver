@@ -13,7 +13,6 @@ import logging
 from io import StringIO
 
 from html_cleaver.cleaver import get_cleaver, HTMLCleaver
-from pickle import NONE
 
 LOG = logging.getLogger(__name__)
 
@@ -164,6 +163,10 @@ class TestHtmlCleaver(unittest.TestCase):
         with get_cleaver("selenium") as cleaver:
             chunk_list = cleaver.parse_chunk_sequence(["test7javascript.html"])
             self.assertEqualData(EXPECT_CHUNKS, chunk_list, False)
+    
+    def test_8suppress(self):
+        chunk_list = get_cleaver().parse_chunk_sequence(["test8suppress.html"])
+        self.assertEqualData(EXPECT_CHUNKS, chunk_list, False)
 
     def test_queue(self):
         g = DEFAULT_CLEAVER.parse_chunk_sequence([

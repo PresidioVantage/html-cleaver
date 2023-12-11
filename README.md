@@ -45,10 +45,11 @@ with get_cleaver() as cleaver:
         print(c)
     
     # sequence of chunks from sequence of pages
-    # (examples of challenging structure yielding poor-quality chunks)
+    # (examples of challenging structure yielding poor-quality chunks/headers)
     l = [
         "https://www.gutenberg.org/cache/epub/56852/pg56852-images.html",
-        "https://www.cnn.com/2023/09/25/opinions/opinion-vincent-doumeizel-seaweed-scn-climate-c2e-spc-intl"]
+        "https://www.cnn.com/2023/09/25/opinions/opinion-vincent-doumeizel-seaweed-scn-climate-c2e-spc-intl",
+        "https://www.space.com/november-full-moon-tonight-2023"]
     for c in cleaver.parse_chunk_sequence(l):
         print(c)
 
