@@ -4,7 +4,7 @@
 [![GitHub Latest Pre-Release](https://img.shields.io/github/release/PresidioVantage/html-cleaver?logo=github&include_prereleases&label=pre-release)](https://github.com/PresidioVantage/html-cleaver/releases)
 [![GitHub Continuous Integration](https://github.com/PresidioVantage/html-cleaver/actions/workflows/html_cleaver_CI.yml/badge.svg)](https://github.com/PresidioVantage/html-cleaver/actions)
 
-# HTML Cleaver 🍀🦫
+# HTML Cleaver ![🍀](https://fonts.gstatic.com/s/e/notoemoji/15.0/1f340/512.png=s32 "clover")![🦫](https://fonts.gstatic.com/s/e/notoemoji/15.0/1f9ab/512.png=s32 "beaver")
 
 Tool for parsing HTML into a chain of chunks with relevant headers.  
 
